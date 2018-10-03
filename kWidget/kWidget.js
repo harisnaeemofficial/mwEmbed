@@ -554,11 +554,19 @@
 				}, 500)
 			}
 		},
-		addThumbCssRules: function () {
+		addThumbCssRules : function (flashvars) {
 			if (this.alreadyAddedThumbRules) {
 				return;
 			}
 			this.alreadyAddedThumbRules = true;
+			if(flashvars && flashvars.thumbEmbedCssUrl){
+				var link = document.createElement("link");
+				link.href = flashvars.thumbEmbedCssUrl;
+				link.type = "text/css";
+				link.rel = "stylesheet";
+				document.getElementsByTagName("head")[0].appendChild(link);
+				return;
+			}
 			var style = document.createElement('STYLE');
 			style.type = 'text/css';
 			var imagePath = this.getPath() + '/modules/MwEmbedSupport/skins/common/images/';
@@ -639,7 +647,8 @@
 			settings.flashvars.autoPlay = true;
             settings.flashvars.thumbEmbedOrigin = true;
 			// inject the centered css rule ( if not already )
-			this.addThumbCssRules();
+
+			this.addThumbCssRules(settings.flashvars);
 
 			// Add the width of the target to the settings:
 			var elm = document.getElementById(targetId);
